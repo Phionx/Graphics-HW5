@@ -129,3 +129,14 @@ def new_matrix(rows = 4, cols = 4):
         for r in range( rows ):
             m[c].append( 0 )
     return m
+
+
+def dot_product(v1, v2):
+    ans = 0
+    if isinstance(v1, list) and isinstance(v2, list) and len(v1) == len(v2):
+        for i in range(0, len(v1)):
+            ans += v1[i]*v2[i]
+        return ans
+    else:
+        print "\nINVALID INPUT"
+        return
