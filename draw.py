@@ -4,41 +4,40 @@ import math
 
 
 def add_circle( points, cx, cy, cz, r, step ):
-    i = 0
     x1 = cx + r
     y1 = cy
+    step = 1.0/step
+    i = step
     while i < 1.002:
-        theta = 2*math.pi*t
+        theta = 2*math.pi*i
         x0 = x1
         y0 = y1
         x1 = cx + r * math.cos(theta)
         y1 = cy + r * math.sin(theta)
-        add_edge(points, x0, y0, cz, x2, y2, cz)
+        add_edge(points, x0, y0, cz, x1, y1, cz)
         i += step
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    curve_x = generate_curve_coefs(x0, x1, x2, x3, curve_type)
-    curve_y = generate_curve_coefs(y0, y1, y2, y3, curve_type)
+    curve_x = generate_curve_coefs(x0, x1, x2, x3, curve_type)[0]
+    curve_y = generate_curve_coefs(y0, y1, y2, y3, curve_type)[0]
 
-    i = 0.0
-    t = {0, 0, 0, 0}
+    step = 1.0/step
+    i = step
+    t = [0, 0, 0, 0]
     x_point1 =  0.0
     y_point1 = 0.0
     x_point2 = x0
     y_point2 = y0
 
     while (i < 1.002):
-        t[0] = i*i*i
-        t[1] = i*i
-        t[2] = i
-        t[3] = 1
-
+        
         x_point1 = x_point2
         y_point1 = y_point2
-        x_point2 = dot_product(curve_x, t)
-        y_point2 = dot_product(curve_y, t)
+        
+        x_point2 = curve_x[0] * i**3 + curve_x[1] * i**2 + curve_x[2] * i + curve_x[3]
+        y_point2 = curve_y[0] * i**3 + curve_y[1] * i**2 + curve_y[2] * i + curve_y[3]
+        add_edge(points, x_point1, y_point1, 0, x_point2, y_point2, 0)
 
-        add_edge(points, x_point1, y_point2, 0, x_point2, y_point2, 0)
         i += step
 
 
